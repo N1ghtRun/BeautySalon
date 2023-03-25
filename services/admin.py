@@ -1,3 +1,7 @@
 from django.contrib import admin
+import services.models
 
-# Register your models here.
+
+admin.site.register(services.models.Service)
+admin.site.register(services.models.Master)
+admin.site.register(services.models.Calendar)
