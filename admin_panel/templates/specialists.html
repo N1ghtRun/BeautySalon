@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>New Specialist</h2>
+<form method="POST" id="new-specialist">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="name">Name:</label>
+        <input type="text" class="form-control" name="name" id="name" required>
+    </div>
+    <div class="form-group">
+        <label for="rank">Rank:</label>
+        <select class="form-control" name="rank" id="rank">
+            <option value="1">1</option>
+            <option value="2">2</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="phone">Phone:</label>
+        <input type="number" class="form-control" name="phone" id="phone" required>
+    </div>
+    <div class="form-group">
+        <label for="status">Status:</label>
+        <select class="form-control" name="status" id="status">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+        </select>
+    </div>
+    <div class="form-group">
+        {% for service in services %}
+        <label for="{{ service.id }}">{{ service.name }}</label>
+        <input type="checkbox" name="service_{{ service.id }}" id="{{ service.id }}"
+               value="{{ service.id }}">
+        {% endfor %}
+        </select>
+    </div>
+
+</form>
+<button type="submit" class="btn btn-secondary btn-lg btn-block" form="new-specialist">Submit</button>
+
+<br>
+<h2>Specialists</h2>
+
+<table class="table table-dark">
+    <thead>
+    <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Rank</th>
+        <th scope="col">Phone</th>
+        <th scope="col">Status</th>
+        <th scope="col">Services</th>
+    </tr>
+    </thead>
+    <tbody>
+
+    {% for specialist in specialists %}
+    <tr>
+        <td scope="row"><a href="{{ specialist.id }}">{{ specialist.name }}</a></td>
+        <td scope="row">{{ specialist.rank }}</td>
+        <td scope="row">{{ specialist.phone }}</td>
+        <td scope="row">{{ specialist.status }}</td>
+        <td scope="row">
+            {% for service in specialist.services.values %}
+            {{ service.name }}
+            {% endfor %}
+        </td>
+    </tr>
+    {% endfor %}
+
+    </tbody>
+</table>
+
+{% endblock %}

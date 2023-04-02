@@ -1,15 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
+
+{% block content %}
 <h2>Available services: </h2>
 {% for service in services %}
     <p>
     {{ service.name }}
     </p>
 {% endfor %}
-</body>
-</html>
+{% endblock %}

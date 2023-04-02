@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block content %}
+<a href="schedule/"><h2>Schedule</h2></a>
+<form method="POST" id="new-specialist">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="name">Name:</label>
+        <input type="text" class="form-control" name="name" id="name" value="{{ specialist.name }}" required>
+    </div>
+    <div class="form-group">
+        <label for="rank">Rank:</label>
+        <select class="form-control" name="rank" id="rank" value="{{ specialist.rank }}">
+            <option value="1">1</option>
+            <option value="2">2</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="phone">Phone:</label>
+        <input type="number" class="form-control" name="phone" id="phone" value="{{ specialist.phone }}" required>
+    </div>
+    <div class="form-group">
+        <label for="status">Status:</label>
+        <select class="form-control" name="status" id="status" value="{{ specialist.status }}">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+        </select>
+    </div>
+<!--    <div class="form-group">-->
+<!--        {% for service in services %}-->
+<!--        <label for="{{ service.id }}">{{ service.name }}</label>-->
+<!--        <input type="checkbox" name="service_{{ service.id }}" id="{{ service.id }}">-->
+<!--        {% endfor %}-->
+<!--        </select>-->
+<!--    </div>-->
+
+</form>
+<button type="submit" class="btn btn-secondary btn-lg btn-block" form="new-specialist">Submit</button>
+{% endblock %}

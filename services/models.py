@@ -11,15 +11,21 @@ class Service(models.Model):
         return self.name
 
 
-class Master(models.Model):
+class Specialist(models.Model):
     RANK_CHOICES = (
-        (0, 'Rank 1'),
-        (1, 'Rank 2'),
+        (1, 'Rank 1'),
+        (2, 'Rank 2'),
+    )
+    STATUS_CHOICES = (
+        (1, 'Status 1'),
+        (2, 'Status 2'),
+        (3, 'Status 3'),
+        (4, 'Status 4'),
     )
     name = models.CharField(max_length=100)
     rank = models.IntegerField(default=0, choices=RANK_CHOICES)
     phone = models.IntegerField()
-    status = models.BooleanField(default=True)
+    status = models.IntegerField(default=0, choices=STATUS_CHOICES)
     services = models.ManyToManyField(Service)
 
     def __str__(self):
@@ -27,19 +33,18 @@ class Master(models.Model):
 
 
 class Booking(models.Model):
-    master = models.ForeignKey(Master, on_delete=models.CASCADE)
+    specialist = models.ForeignKey(Specialist, on_delete=models.CASCADE)
     service = models.ForeignKey(Service, on_delete=models.CASCADE)
     client = models.ForeignKey(User, on_delete=models.CASCADE)
     date = models.DateTimeField(auto_now=True)
     status = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.master
+        return self.specialist.name
 
 
 class Calendar(models.Model):
-    master = models.ForeignKey(Master, on_delete=models.CASCADE)
-    date = models.DateTimeField()
+    specialist = models.ForeignKey(Specialist, on_delete=models.CASCADE)
+    date = models.DateField()
     time_start = models.TimeField()
     time_end = models.TimeField()
-
