@@ -36,14 +36,14 @@ class Booking(models.Model):
     specialist = models.ForeignKey(Specialist, on_delete=models.CASCADE)
     service = models.ForeignKey(Service, on_delete=models.CASCADE)
     client = models.ForeignKey(User, on_delete=models.CASCADE)
-    date = models.DateTimeField(auto_now=True)
+    date = models.DateTimeField(auto_now=False)
     status = models.BooleanField(default=False)
 
     def __str__(self):
         return self.specialist.name
 
 
-class Calendar(models.Model):
+class WorkSchedule(models.Model):
     specialist = models.ForeignKey(Specialist, on_delete=models.CASCADE)
     date = models.DateField()
     time_start = models.TimeField()

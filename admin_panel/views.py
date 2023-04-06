@@ -1,11 +1,11 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.shortcuts import render
-from services.models import Service as ServiceModel, Specialist as SpecialistModel, Calendar as CalendarModel
+from services.models import Service as ServiceModel, Specialist as SpecialistModel, WorkSchedule as WorkScheduleModel
 
 
 def panel(request):
-    return render(request, 'panel.html')
+    return render(request, 'admin_panel/panel.html')
 
 
 def services(request):
@@ -15,7 +15,7 @@ def services(request):
                                    price=request.POST.get('price'))
         new_service.save()
 
-    return render(request, 'services.html', {'services': services})
+    return render(request, 'admin_panel/services.html', {'services': services})
 
 
 def service_single(request, service_id):
@@ -42,7 +42,7 @@ def specialists(request):
     services = ServiceModel.objects.all()
     specialists = SpecialistModel.objects.all()
 
-    return render(request, 'specialists.html', {'services': services, 'specialists': specialists})
+    return render(request, 'admin_panel/specialists.html', {'services': services, 'specialists': specialists})
 
 
 def specialist_single(request, specialist_id):
@@ -56,31 +56,31 @@ def specialist_single(request, specialist_id):
         specialist.status = request.POST.get('status')
         specialist.save()
 
-    return render(request, 'specialist.html', {'specialist': specialist, 'services': services})
+    return render(request, 'admin_panel/specialist.html', {'specialist': specialist, 'services': services})
 
 
 def specialist_schedule(request, specialist_id):
     specialist = SpecialistModel.objects.get(id=specialist_id)
-    schedules = CalendarModel.objects.filter(specialist_id=specialist_id)
+    schedules = WorkScheduleModel.objects.filter(specialist_id=specialist_id)
 
     if request.method == 'POST':
-        new_schedule = CalendarModel(specialist=specialist, date=request.POST.get('date'),
+        new_schedule = WorkScheduleModel(specialist=specialist, date=request.POST.get('date'),
                                      time_start=request.POST.get('time_start'),
                                      time_end=request.POST.get('time_end'))
         new_schedule.save()
 
-    return render(request, 'specialist_schedule.html', {'schedules': schedules, 'specialist': specialist})
+    return render(request, 'admin_panel/specialist_schedule.html', {'schedules': schedules, 'specialist': specialist})
 
 
 def specialist_schedule_single(request, specialist_id, schedule_id):
-    schedule = CalendarModel.objects.get(id=schedule_id)
+    schedule = WorkScheduleModel.objects.get(id=schedule_id)
     if request.method == 'POST':
         schedule.date = request.POST.get('date')
         schedule.time_start = request.POST.get('time_start')
         schedule.time_end = request.POST.get('time_end')
         schedule.save()
 
-    return render(request, 'specialist_schedule_single.html', {'schedule': schedule})
+    return render(request, 'admin_panel/specialist_schedule_single.html', {'schedule': schedule})
 
 
 def bookings(request):
