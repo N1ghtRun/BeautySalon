@@ -82,7 +82,6 @@ def booking(request):
         if appointment_date_obj in free_time:
             new_booking.save()
         else:
-            print(free_time)
             return HttpResponse('Wrong time')
 
     return render(request, 'booking.html', {'specialists': specialists, 'services': services, 'bookings': bookings})
