@@ -77,8 +77,9 @@ def booking(request):
         time_end = schedule_obj[0].time_end
         time_start_date = datetime.datetime.combine(appointment_date_obj.date(), time_start)
         time_end_date = datetime.datetime.combine(appointment_date_obj.date(), time_end)
+        bookings_day = BookingModel.objects.filter(specialist=specialist_single, date__day=time_start_date)
 
-        free_time = calc_free_time_in_day(specialist_single, service_single, time_start_date, time_end_date)
+        free_time = calc_free_time_in_day(bookings_day, service_single, time_start_date, time_end_date)
         if appointment_date_obj in free_time:
             new_booking.save()
         else:
