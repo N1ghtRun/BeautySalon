@@ -53,8 +53,6 @@ def specialist_single(request, specialist_id):
 
 
 def booking(request):
-    # specialists = SpecialistModel.objects.all()
-    # services = ServiceModel.objects.all()
     work_schedules = WorkScheduleModel.objects.filter(date__gte=datetime.date.today(),
                                                       date__lte=datetime.date.today() + datetime.timedelta(
                                                           days=7)).all()
@@ -77,8 +75,7 @@ def booking(request):
         time_end = schedule_obj[0].time_end
         time_start_date = datetime.datetime.combine(appointment_date_obj.date(), time_start)
         time_end_date = datetime.datetime.combine(appointment_date_obj.date(), time_end)
-        bookings_day = BookingModel.objects.filter(specialist=specialist_single, date__day=time_start_date)
-
+        bookings_day = BookingModel.objects.filter(specialist=specialist_single, date__day=time_start_date.day)
         free_time = calc_free_time_in_day(bookings_day, service_single, time_start_date, time_end_date)
         if appointment_date_obj in free_time:
             new_booking.save()
