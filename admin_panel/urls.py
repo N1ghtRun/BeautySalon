@@ -6,7 +6,6 @@ urlpatterns = [
     path('', views.panel, name='panel'),
     path('services/', views.services, name='admin_services'),
     path('services/<int:service_id>/', views.service_single),
-    path('bookings/', views.bookings),
     path('specialists/', views.specialists, name='admin_specialists'),
     path('specialist/<int:specialist_id>/', views.specialist_single),
     path('specialist/<int:specialist_id>/schedule/', views.specialist_schedule),

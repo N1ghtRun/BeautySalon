@@ -1,6 +1,7 @@
 import datetime
 
-from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 
@@ -25,6 +26,7 @@ def services(request):
     return render(request, 'services.html', {'services': services})
 
 
+@login_required(login_url='login')
 def service_single(request, service_id):
     work_schedules = WorkScheduleModel.objects.filter(date__gte=datetime.date.today(),
                                                       date__lte=datetime.date.today() + datetime.timedelta(
@@ -42,6 +44,7 @@ def specialists(request):
     return render(request, 'specialists.html', {'services': services, 'specialists': specialists})
 
 
+@login_required(login_url='login')
 def specialist_single(request, specialist_id):
     work_schedules = WorkScheduleModel.objects.filter(date__gte=datetime.date.today(),
                                                       date__lte=datetime.date.today() + datetime.timedelta(
@@ -52,6 +55,7 @@ def specialist_single(request, specialist_id):
     return render(request, 'specialist.html', {'specialist': specialist, 'services': services})
 
 
+@login_required(login_url='login')
 def booking(request):
     work_schedules = WorkScheduleModel.objects.filter(date__gte=datetime.date.today(),
                                                       date__lte=datetime.date.today() + datetime.timedelta(
@@ -59,7 +63,8 @@ def booking(request):
     specialists = SpecialistModel.objects.filter(workschedule__in=work_schedules).distinct()
     services = ServiceModel.objects.filter(specialist__in=specialists).distinct()
 
-    client = User.objects.get(id=1)
+    client = User.objects.get(id=request.user.pk)
+    # client = User.objects.get(id=1)
     bookings = BookingModel.objects.all()
 
     if request.method == 'POST':

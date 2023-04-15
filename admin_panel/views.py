@@ -1,14 +1,20 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.shortcuts import render
 from services.models import Service as ServiceModel, Specialist as SpecialistModel, WorkSchedule as WorkScheduleModel
 
 
 def panel(request):
+    if not request.user.groups.filter(name='salon admin'):
+        return redirect('login')
+
     return render(request, 'admin_panel/panel.html')
 
 
 def services(request):
+    if not request.user.groups.filter(name='salon admin'):
+        return redirect('login')
+
     services = ServiceModel.objects.all()
     if request.method == 'POST':
         new_service = ServiceModel(name=request.POST.get('name'), time=request.POST.get('time'),
@@ -19,6 +25,9 @@ def services(request):
 
 
 def service_single(request, service_id):
+    if not request.user.groups.filter(name='salon admin'):
+        return redirect('login')
+
     service = ServiceModel.objects.get(id=service_id)
     if request.method == 'POST':
         service.name = request.POST.get('name')
@@ -29,6 +38,9 @@ def service_single(request, service_id):
 
 
 def specialists(request):
+    if not request.user.groups.filter(name='salon admin'):
+        return redirect('login')
+
     if request.method == 'POST':
         new_specialist = SpecialistModel(name=request.POST.get('name'), rank=request.POST.get('rank'),
                                          phone=request.POST.get('phone'), status=request.POST.get('status'))
@@ -46,6 +58,9 @@ def specialists(request):
 
 
 def specialist_single(request, specialist_id):
+    if not request.user.groups.filter(name='salon admin'):
+        return redirect('login')
+
     specialist = SpecialistModel.objects.get(id=specialist_id)
     services = ServiceModel.objects.all()
 
@@ -60,6 +75,9 @@ def specialist_single(request, specialist_id):
 
 
 def specialist_schedule(request, specialist_id):
+    if not request.user.groups.filter(name='salon admin'):
+        return redirect('login')
+
     specialist = SpecialistModel.objects.get(id=specialist_id)
     schedules = WorkScheduleModel.objects.filter(specialist_id=specialist_id)
 
@@ -73,6 +91,9 @@ def specialist_schedule(request, specialist_id):
 
 
 def specialist_schedule_single(request, specialist_id, schedule_id):
+    if not request.user.groups.filter(name='salon admin'):
+        return redirect('login')
+
     schedule = WorkScheduleModel.objects.get(id=schedule_id)
     if request.method == 'POST':
         schedule.date = request.POST.get('date')
@@ -83,5 +104,3 @@ def specialist_schedule_single(request, specialist_id, schedule_id):
     return render(request, 'admin_panel/specialist_schedule_single.html', {'schedule': schedule})
 
 
-def bookings(request):
-    return HttpResponse('Bookings')

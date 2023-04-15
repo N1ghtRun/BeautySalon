@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
 
 {% block content %}
+{% if request.user.is_authenticated %}
+<p>You're logged in as <b>{{ request.user }}</b></p>
+{% endif %}
 <h2>Available services: </h2>
 {% for service in services %}
     <p>
