@@ -7,13 +7,17 @@ from django.contrib.auth.models import User
 
 
 class Test(TestCase):
+    fixtures = ['fixture_test.json']
+
     def test_booking(self):
+
         service_1 = ServiceModel(name='test_service_1', time=30, price=200)
         service_1.save()
         specialist = SpecialistModel(name='Anna', phone=123456789, status=1, rank=1)
         specialist.save()
         specialist.services.add(service_1)
-        user = User(username='admin', password='admin')
+        user = User(username='admin2')
+        user.set_password('admin2')
         user.save()
         schedule = ScheduleModel(specialist=specialist, date=datetime.date(year=2017, month=2, day=15),
                                  time_start=datetime.time(hour=8, minute=0), time_end=datetime.time(hour=15, minute=0))
@@ -24,7 +28,9 @@ class Test(TestCase):
         specialists = SpecialistModel.objects.all()
         bookings = BookingModel.objects.all()
 
+
         c = Client()
+        c.login(username='admin', password='admin')
         response = c.post('/booking/',
                           {'services': services, 'specialists': specialists, 'bookings': bookings,
                            'specialist': f'{specialist.id}',
@@ -33,7 +39,7 @@ class Test(TestCase):
         self.assertEqual(response.status_code, 200)
 
         bookings = BookingModel.objects.all()
-        self.assertEqual(len(bookings), 1)
+        self.assertEqual(len(bookings), 9)
 
 
 # from services.utils.periods_calc import convert_periods_to_set, test_calc_free_time_in_day
