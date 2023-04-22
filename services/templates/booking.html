@@ -43,7 +43,7 @@
     </thead>
     <tbody>
 
-    {% for booking in bookings %}
+    {% for booking in page_obj %}
     <tr>
         <td scope="row">{{ booking.date }}</td>
         <td scope="row">{{ booking.service }}</td>
@@ -52,7 +52,9 @@
         <td scope="row">{{ booking.status }}</td>
     </tr>
     {% endfor %}
+    <br>
 
+    {% include 'inc/pagination.html' %}
     </tbody>
 </table>
 {% endblock %}

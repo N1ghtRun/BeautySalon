@@ -1,3 +1,4 @@
+from django.core.paginator import Paginator
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.shortcuts import render
@@ -54,7 +55,12 @@ def specialists(request):
     services = ServiceModel.objects.all()
     specialists = SpecialistModel.objects.all()
 
-    return render(request, 'admin_panel/specialists.html', {'services': services, 'specialists': specialists})
+    # paginator
+    paginator = Paginator(specialists, 1)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, 'admin_panel/specialists.html', {'services': services, 'page_obj': page_obj})
 
 
 def specialist_single(request, specialist_id):

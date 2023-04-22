@@ -1,6 +1,7 @@
 import datetime
 
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.models import User
@@ -87,4 +88,9 @@ def booking(request):
         else:
             return HttpResponse('Wrong time')
 
-    return render(request, 'booking.html', {'specialists': specialists, 'services': services, 'bookings': bookings})
+    # paginator
+    paginator = Paginator(bookings, 2)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, 'booking.html', {'specialists': specialists, 'services': services, 'page_obj': page_obj})

@@ -55,7 +55,7 @@
     </thead>
     <tbody>
 
-    {% for specialist in specialists %}
+    {% for specialist in page_obj %}
     <tr>
         <td scope="row"><a href="{{ specialist.id }}">{{ specialist.name }}</a></td>
         <td scope="row">{{ specialist.rank }}</td>
@@ -68,6 +68,9 @@
         </td>
     </tr>
     {% endfor %}
+    <br>
+
+    {% include 'inc/pagination.html' %}
 
     </tbody>
 </table>
